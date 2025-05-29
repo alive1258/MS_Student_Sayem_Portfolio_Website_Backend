@@ -8,6 +8,7 @@ import {
   Delete,
   Req,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { SkillsService } from './skills.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
@@ -15,11 +16,16 @@ import { UpdateSkillDto } from './dto/update-skill.dto';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { GetSkillDto } from './dto/get-skill.dto';
+import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
+import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('skills')
 export class SkillsController {
   constructor(private readonly skillsService: SkillsService) {}
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Post()
   @ApiOperation({
     summary: 'Create a data.',
@@ -76,6 +82,8 @@ export class SkillsController {
     return this.skillsService.findOne(id);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Patch(':id')
   @ApiParam({
     name: 'id',
@@ -96,6 +104,8 @@ export class SkillsController {
     return this.skillsService.update(id, updateSkillDto);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Delete(':id')
   @ApiParam({
     name: 'id',

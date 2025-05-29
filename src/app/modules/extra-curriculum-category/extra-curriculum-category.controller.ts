@@ -8,6 +8,7 @@ import {
   Delete,
   Req,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
 import {
@@ -22,6 +23,9 @@ import { ExtraCurriculumCategoryService } from './extra-curriculum-category.serv
 import { CreateExtraCurriculumCategoryDto } from './dto/create-extra-curriculum-category.dto';
 import { UpdateExtraCurriculumCategoryDto } from './dto/update-extra-curriculum-category.dto';
 import { GetExtraCurriculumCategoryDto } from './dto/get-extra-curriculum-category.dto';
+import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
+import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
+import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('Extra Curriculum Categories')
 @Controller('extra-curriculum-categories')
@@ -30,6 +34,8 @@ export class ExtraCurriculumCategoryController {
     private readonly extraCurriculumCategoryService: ExtraCurriculumCategoryService,
   ) {}
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Post()
   @ApiOperation({ summary: 'Create a new extra curriculum category' })
   @ApiResponse({ status: 201, description: 'Category created successfully' })
@@ -95,6 +101,8 @@ export class ExtraCurriculumCategoryController {
     return this.extraCurriculumCategoryService.findOne(id);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Patch(':id')
   @ApiOperation({ summary: 'Update an existing category by ID' })
   @ApiParam({
@@ -115,6 +123,8 @@ export class ExtraCurriculumCategoryController {
     );
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a category by ID' })
   @ApiParam({

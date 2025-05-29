@@ -1,4 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, Req, UploadedFile, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  Req,
+  UploadedFile,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { MyHobbiesService } from './my-hobbies.service';
 import { CreateMyHobbyDto } from './dto/create-my-hobby.dto';
 import { UpdateMyHobbyDto } from './dto/update-my-hobby.dto';
@@ -6,15 +19,19 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { GetMyHobbyDto } from './dto/get-my-hobby.dto';
+import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
+import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('my-hobbies')
 export class MyHobbiesController {
   constructor(private readonly myHobbiesService: MyHobbiesService) {}
 
-
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Post()
-    @ApiOperation({
+  @ApiOperation({
     summary: 'Create a data.',
   })
   @ApiResponse({
@@ -22,15 +39,15 @@ export class MyHobbiesController {
     description: 'Data created successfully.',
   })
   create(
-    @Req() req:Request,
+    @Req() req: Request,
     @Body() createMyHobbyDto: CreateMyHobbyDto,
-  @UploadedFile() file?: Express.Multer.File,
+    @UploadedFile() file?: Express.Multer.File,
   ) {
-    return this.myHobbiesService.create(req,createMyHobbyDto, file);
+    return this.myHobbiesService.create(req, createMyHobbyDto, file);
   }
 
-  @Get("/all-my-hobbies")
-    @ApiQuery({
+  @Get('/all-my-hobbies')
+  @ApiQuery({
     name: 'limit',
     type: 'string',
     required: false,
@@ -59,7 +76,7 @@ export class MyHobbiesController {
   }
 
   @Get(':id')
-    @ApiParam({
+  @ApiParam({
     name: 'id',
     type: 'string',
     required: true,
@@ -73,6 +90,8 @@ export class MyHobbiesController {
     return this.myHobbiesService.findOne(id);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Patch(':id')
   @ApiParam({
@@ -90,12 +109,16 @@ export class MyHobbiesController {
     description: 'Successfully updated the Hero Section.',
   })
   @ApiResponse({ status: 400, description: 'Invalid ID or update data.' })
-  update(@Param('id') id: string, @Body() updateMyHobbyDto: UpdateMyHobbyDto,
-@UploadedFile() file?: Express.Multer.File, 
-) {
-    return this.myHobbiesService.update(id, updateMyHobbyDto,file);
+  update(
+    @Param('id') id: string,
+    @Body() updateMyHobbyDto: UpdateMyHobbyDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    return this.myHobbiesService.update(id, updateMyHobbyDto, file);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Delete(':id')
   @ApiParam({
     name: 'id',

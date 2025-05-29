@@ -8,6 +8,7 @@ import {
   Delete,
   Req,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { SnapshotsCategoryService } from './snapshots-category.service';
 import { CreateSnapshotsCategoryDto } from './dto/create-snapshots-category.dto';
@@ -15,6 +16,9 @@ import { UpdateSnapshotsCategoryDto } from './dto/update-snapshots-category.dto'
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { GetSnapshotsCategoryDto } from './dto/get-snapshots-category.dto';
+import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
+import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('snapshots-category')
 export class SnapshotsCategoryController {
@@ -22,6 +26,8 @@ export class SnapshotsCategoryController {
     private readonly snapshotsCategoryService: SnapshotsCategoryService,
   ) {}
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Post()
   @ApiOperation({ summary: 'Create a new snapshots category' })
   @ApiResponse({ status: 201, description: 'Category created successfully' })
@@ -78,6 +84,8 @@ export class SnapshotsCategoryController {
     return this.snapshotsCategoryService.findOne(id);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Patch(':id')
   @ApiOperation({ summary: 'Update a snapshots category by ID' })
   @ApiParam({
@@ -96,6 +104,8 @@ export class SnapshotsCategoryController {
     return this.snapshotsCategoryService.update(id, updateSnapshotsCategoryDto);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a snapshots category by ID' })
   @ApiParam({

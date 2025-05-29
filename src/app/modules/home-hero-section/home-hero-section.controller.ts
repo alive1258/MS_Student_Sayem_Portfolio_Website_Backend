@@ -10,6 +10,7 @@ import {
   Req,
   UploadedFile,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { HomeHeroSectionService } from './home-hero-section.service';
 import { CreateHomeHeroSectionDto } from './dto/create-home-hero-section.dto';
@@ -18,6 +19,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { GetHomeHeroSectionDto } from './dto/get-home-hero-section.dto';
+import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
+import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('home-hero-section')
 export class HomeHeroSectionController {
@@ -25,6 +29,8 @@ export class HomeHeroSectionController {
     private readonly homeHeroSectionService: HomeHeroSectionService,
   ) {}
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Post()
   @ApiOperation({
@@ -90,6 +96,8 @@ export class HomeHeroSectionController {
     return this.homeHeroSectionService.findOne(id);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Patch(':id')
   @ApiParam({
@@ -120,6 +128,8 @@ export class HomeHeroSectionController {
     );
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Delete(':id')
   @ApiParam({
     name: 'id',

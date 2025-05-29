@@ -11,6 +11,7 @@ import {
   ParseIntPipe,
   Req,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,6 +21,9 @@ import { AuthType } from 'src/app/auth/enums/auth-type.enum';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { GetUsersDto } from './dto/get-users.dto';
+import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
+import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
+import { Throttle } from '@nestjs/throttler';
 
 /**
  * UsersController handles all user-related API endpoints.
@@ -37,6 +41,8 @@ export class UsersController {
    * Creates a new user.
   
    */
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Post()
   @ApiOperation({
     summary: 'Create a data.',
@@ -104,6 +110,8 @@ export class UsersController {
    * Updates a user's information.
    
    */
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
@@ -113,6 +121,8 @@ export class UsersController {
    * Deletes a user by ID.
  
    */
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);

@@ -8,6 +8,7 @@ import {
   Delete,
   Req,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { HomeEducationService } from './home-education.service';
 import { CreateHomeEducationDto } from './dto/create-home-education.dto';
@@ -15,11 +16,16 @@ import { UpdateHomeEducationDto } from './dto/update-home-education.dto';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { GetHomeEducationDto } from './dto/get-home-education.dto';
+import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
+import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('home-education')
 export class HomeEducationController {
   constructor(private readonly homeEducationService: HomeEducationService) {}
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Post()
   @ApiOperation({
     summary: 'Create a data.',
@@ -79,6 +85,8 @@ export class HomeEducationController {
     return this.homeEducationService.findOne(id);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Patch(':id')
   @ApiParam({
     name: 'id',
@@ -102,6 +110,8 @@ export class HomeEducationController {
     return this.homeEducationService.update(id, updateHomeEducationDto);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Delete(':id')
   @ApiParam({
     name: 'id',

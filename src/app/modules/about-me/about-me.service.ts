@@ -58,8 +58,7 @@ export class AboutMeService {
       photo,
     });
 
-    const result = await this.aboutMeRepository.save(newAboutMe);
-    return result;
+    return await this.aboutMeRepository.save(newAboutMe);
   }
 
   public async findAll(

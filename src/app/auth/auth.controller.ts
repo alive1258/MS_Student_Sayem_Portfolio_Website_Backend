@@ -13,10 +13,8 @@ import { SignInDto } from './dtos/signin.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth } from './decorators/auth.decorator';
 import { AuthType } from './enums/auth-type.enum';
-
 import { UserOTPDto } from './dtos/user-otp.dto';
 import { Request } from 'express';
-import { UpdateUserDto } from '../modules/users/dto/update-user.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dtos';
 
 @Controller('auth')

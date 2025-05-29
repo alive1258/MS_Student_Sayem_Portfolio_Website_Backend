@@ -10,6 +10,7 @@ import {
   Req,
   UploadedFile,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ExtraCurriculumService } from './extra-curriculum.service';
 import { CreateExtraCurriculumDto } from './dto/create-extra-curriculum.dto';
@@ -18,6 +19,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { GetExtraCurriculumCategoryDto } from '../extra-curriculum-category/dto/get-extra-curriculum-category.dto';
+import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
+import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('extra-curriculum')
 export class ExtraCurriculumController {
@@ -25,6 +29,8 @@ export class ExtraCurriculumController {
     private readonly extraCurriculumService: ExtraCurriculumService,
   ) {}
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Post()
   @ApiOperation({
@@ -92,6 +98,8 @@ export class ExtraCurriculumController {
     return this.extraCurriculumService.findOne(id);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Patch(':id')
   @ApiParam({
@@ -121,6 +129,8 @@ export class ExtraCurriculumController {
     );
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Delete(':id')
   @ApiParam({
     name: 'id',

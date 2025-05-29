@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'about-me' })
+@Entity({ name: 'about_me' })
 export class AboutMe {
   /**
    * Primary key ID (auto-incremented bigint)
@@ -32,13 +32,13 @@ export class AboutMe {
   /**
    * Link to the CV or portfolio (optional).
    */
-  @Column({ type: 'varchar', nullable: true, length: 500 })
+  @Column({ type: 'varchar', nullable: true })
   cv_link?: string;
 
   /**
    * Photo filename or image URL (optional).
    */
-  @Column({ type: 'varchar', nullable: true, length: 255 })
+  @Column({ type: 'bigint', nullable: true })
   photo?: string;
 
   /**

@@ -8,21 +8,12 @@ import databaseConfig from './config/database.config';
 import environmentValidation from './config/environment.validation';
 import profileConfig from './app/modules/users/config/profile.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import jwtConfig from './app/auth/config/jwt.config';
-import { JwtModule } from '@nestjs/jwt';
-import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { AuthenticationGuard } from './app/auth/guards/authentication/authentication.guard';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { DatabaseExceptionFilter } from './app/common/errors/global.errors';
 import { DataResponseInterceptor } from './app/common/interceptors/data-response/data-response.interceptor';
-import { InitialAuthenticationGuard } from './app/auth/guards/authentication/initial.guard';
-import { PackagesModule } from './app/modules/packages/packages.module';
 import { DataQueryModule } from './app/common/data-query/data-query.module';
 import { MailModule } from './app/modules/mail/mail.module';
-import { PricingModule } from './app/modules/pricing/pricing.module';
-import { FaqsModule } from './app/modules/faqs/faqs.module';
 import { FileUploadsModule } from './app/common/file-uploads/file-uploads.modules';
-import { TestimonialsModule } from './app/modules/testimonials/testimonials.module';
-import { FaqAnsModule } from './app/modules/faq-ans/faq-ans.module';
 import { HomeHeroSectionModule } from './app/modules/home-hero-section/home-hero-section.module';
 import { HomeAboutSectionModule } from './app/modules/home-about-section/home-about-section.module';
 import { HomeEducationModule } from './app/modules/home-education/home-education.module';
@@ -38,6 +29,7 @@ import { ExtraCurriculumModule } from './app/modules/extra-curriculum/extra-curr
 import { SkillsCategoryModule } from './app/modules/skills-category/skills-category.module';
 import { SkillsModule } from './app/modules/skills/skills.module';
 import { CollaboratingModule } from './app/modules/collaborating/collaborating.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 /**
  * // Get environment (development/production/etc.)
@@ -47,6 +39,14 @@ const ENV = process.env.NODE_ENV;
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 1,
+        },
+      ],
+    }),
     // Load environment variables and global configs
     UsersModule,
     ConfigModule.forRoot({
@@ -72,19 +72,11 @@ const ENV = process.env.NODE_ENV;
       }),
     }),
 
-    // JWT authentication module setup
-    ConfigModule.forFeature(jwtConfig),
-    JwtModule.registerAsync(jwtConfig.asProvider()),
     // Feature modules
 
-    PackagesModule,
     DataQueryModule,
     MailModule,
-    PricingModule,
-    FaqsModule,
     FileUploadsModule,
-    TestimonialsModule,
-    FaqAnsModule,
     HomeHeroSectionModule,
     HomeAboutSectionModule,
     HomeEducationModule,
@@ -104,15 +96,7 @@ const ENV = process.env.NODE_ENV;
   controllers: [AppController],
   providers: [
     AppService,
-    // Global Guards
-    {
-      provide: APP_GUARD,
-      useClass: InitialAuthenticationGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: AuthenticationGuard,
-    },
+
     // Global Interceptors
     {
       provide: APP_INTERCEPTOR,

@@ -10,6 +10,7 @@ import {
   UploadedFile,
   Req,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { AboutMeService } from './about-me.service';
 import { CreateAboutMeDto } from './dto/create-about-me.dto';
@@ -18,12 +19,17 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { GetAboutMeDto } from './dto/get-about-me.dto';
-
+import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
+import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('about-me')
 export class AboutMeController {
   constructor(private readonly aboutMeService: AboutMeService) {}
 
+  // ✅ Protected  endpoint
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Post()
   @ApiOperation({
@@ -85,6 +91,8 @@ export class AboutMeController {
     return this.aboutMeService.findOne(id);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Patch(':id')
   @ApiParam({
@@ -110,6 +118,8 @@ export class AboutMeController {
     return this.aboutMeService.update(id, updateAboutMeDto, file);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Delete(':id')
   @ApiParam({
     name: 'id',

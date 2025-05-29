@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { CollaborateService } from './collaborate.service';
 import { CreateCollaborateDto } from './dto/create-collaborate.dto';
@@ -21,6 +22,9 @@ import {
 } from '@nestjs/swagger';
 import { GetCollaborateDto } from './dto/get-collaborate.dto';
 import { Request } from 'express';
+import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
+import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('collaborate')
 @ApiTags('Collaborate')
@@ -30,6 +34,8 @@ export class CollaborateController {
   /**
    * Create collaborate  controller
    */
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Post()
   @ApiOperation({
     summary: 'Create a data.',
@@ -96,6 +102,8 @@ export class CollaborateController {
     return this.collaborateService.findOne(id);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Patch(':id')
   @ApiParam({
     name: 'id',
@@ -114,6 +122,8 @@ export class CollaborateController {
     return this.collaborateService.update(id, updateCollaborateDto);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Delete(':id')
   @ApiParam({
     name: 'id',

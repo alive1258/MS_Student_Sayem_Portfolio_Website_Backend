@@ -8,6 +8,7 @@ import {
   Delete,
   Req,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { SkillsCategoryService } from './skills-category.service';
 import { CreateSkillsCategoryDto } from './dto/create-skills-category.dto';
@@ -15,11 +16,16 @@ import { UpdateSkillsCategoryDto } from './dto/update-skills-category.dto';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { GetSkillsCategoryDto } from './dto/get-skills-category.dto';
+import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
+import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('skills-category')
 export class SkillsCategoryController {
   constructor(private readonly skillsCategoryService: SkillsCategoryService) {}
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Post()
   @ApiOperation({ summary: 'Create a new snapshots category' })
   @ApiResponse({ status: 201, description: 'Category created successfully' })
@@ -73,6 +79,8 @@ export class SkillsCategoryController {
     return this.skillsCategoryService.findOne(id);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Patch(':id')
   @ApiOperation({ summary: 'Update a snapshots category by ID' })
   @ApiParam({
@@ -91,6 +99,8 @@ export class SkillsCategoryController {
     return this.skillsCategoryService.update(id, updateSkillsCategoryDto);
   }
 
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a snapshots category by ID' })
   @ApiParam({
