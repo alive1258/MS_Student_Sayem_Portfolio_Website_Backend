@@ -30,6 +30,12 @@ import { SkillsCategoryModule } from './app/modules/skills-category/skills-categ
 import { SkillsModule } from './app/modules/skills/skills.module';
 import { CollaboratingModule } from './app/modules/collaborating/collaborating.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { ArticlesModule } from './app/modules/articles/articles.module';
+import { ArticleCategoriesModule } from './app/modules/article-categories/article-categories.module';
+import { ArticleDetailsModule } from './app/modules/article-details/article-details.module';
+import { ProjectsModule } from './app/modules/projects/projects.module';
+import { ProjectCategoriesModule } from './app/modules/project-categories/project-categories.module';
+import { ProjectDetailsModule } from './app/modules/project-details/project-details.module';
 
 /**
  * // Get environment (development/production/etc.)
@@ -92,6 +98,12 @@ const ENV = process.env.NODE_ENV;
     SkillsCategoryModule,
     SkillsModule,
     CollaboratingModule,
+    ArticlesModule,
+    ArticleCategoriesModule,
+    ArticleDetailsModule,
+    ProjectsModule,
+    ProjectCategoriesModule,
+    ProjectDetailsModule,
   ],
   controllers: [AppController],
   providers: [
