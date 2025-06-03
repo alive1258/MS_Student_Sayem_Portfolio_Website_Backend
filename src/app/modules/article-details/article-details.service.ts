@@ -12,7 +12,6 @@ import { Repository } from 'typeorm';
 import { FileUploadsService } from 'src/app/common/file-uploads/file-uploads.service';
 import { DataQueryService } from 'src/app/common/data-query/data-query.service';
 import { Request } from 'express';
-import { GetArticleDto } from './../articles/dto/get-article.dto';
 import { IPagination } from 'src/app/common/data-query/pagination.interface';
 import { GetArticleDetailDto } from './dto/get-article-detail.dto';
 

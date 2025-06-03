@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Post,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dtos/signin.dto';
@@ -16,6 +17,9 @@ import { AuthType } from './enums/auth-type.enum';
 import { UserOTPDto } from './dtos/user-otp.dto';
 import { Request } from 'express';
 import { ResetPasswordDto } from './dtos/reset-password.dtos';
+import { AuthenticationGuard } from './guards/authentication.guard';
+import { IpDeviceThrottlerGuard } from './decorators/ip-device-throttler-guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -141,6 +145,8 @@ export class AuthController {
   /**
    * Get me controller
    */
+  @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Get('/get-me')
   @ApiOperation({
     summary: 'Get single data.',

@@ -6,32 +6,32 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
   UseInterceptors,
   Req,
   UploadedFile,
   Query,
-  UseGuards,
 } from '@nestjs/common';
-import { HomeHeroSectionService } from './home-hero-section.service';
-import { CreateHomeHeroSectionDto } from './dto/create-home-hero-section.dto';
-import { UpdateHomeHeroSectionDto } from './dto/update-home-hero-section.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Request } from 'express';
-import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
-import { GetHomeHeroSectionDto } from './dto/get-home-hero-section.dto';
+import { ResearchAndPublicationsService } from './research-and-publications.service';
+import { CreateResearchAndPublicationDto } from './dto/create-research-and-publication.dto';
+import { UpdateResearchAndPublicationDto } from './dto/update-research-and-publication.dto';
 import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
 import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
 import { Throttle } from '@nestjs/throttler';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { Request } from 'express';
+import { GetResearchAndPublicationDto } from './dto/get-research-and-publication.dto';
 
-@Controller('home-hero-section')
-export class HomeHeroSectionController {
+@Controller('research-and-publications')
+export class ResearchAndPublicationsController {
   constructor(
-    private readonly homeHeroSectionService: HomeHeroSectionService,
+    private readonly researchAndPublicationsService: ResearchAndPublicationsService,
   ) {}
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
-  @UseInterceptors(FileInterceptor('photo'))
+  @Throttle({ default: { limit: 20, ttl: 180 } })
+  @UseInterceptors(FileInterceptor('thumbnail'))
   @Post()
   @ApiOperation({
     summary: 'Create a data.',
@@ -42,12 +42,12 @@ export class HomeHeroSectionController {
   })
   create(
     @Req() req: Request,
-    @Body() createHomeHeroSectionDto: CreateHomeHeroSectionDto,
+    @Body() createResearchAndPublicationDto: CreateResearchAndPublicationDto,
     @UploadedFile() file?: Express.Multer.File,
   ) {
-    return this.homeHeroSectionService.create(
+    return this.researchAndPublicationsService.create(
       req,
-      createHomeHeroSectionDto,
+      createResearchAndPublicationDto,
       file,
     );
   }
@@ -77,8 +77,10 @@ export class HomeHeroSectionController {
   @ApiOperation({
     summary: 'Get all the data.',
   })
-  findAll(@Query() getHomeHeroSectionDto: GetHomeHeroSectionDto) {
-    return this.homeHeroSectionService.findAll(getHomeHeroSectionDto);
+  findAll(@Query() getResearchAndPublicationDto: GetResearchAndPublicationDto) {
+    return this.researchAndPublicationsService.findAll(
+      getResearchAndPublicationDto,
+    );
   }
 
   @Get(':id')
@@ -93,11 +95,11 @@ export class HomeHeroSectionController {
     summary: 'Get single data.',
   })
   findOne(@Param('id') id: string) {
-    return this.homeHeroSectionService.findOne(id);
+    return this.researchAndPublicationsService.findOne(id);
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Patch(':id')
   @ApiParam({
@@ -117,13 +119,12 @@ export class HomeHeroSectionController {
   @ApiResponse({ status: 400, description: 'Invalid ID or update data.' })
   update(
     @Param('id') id: string,
-    @Body() updateHomeHeroSectionDto: UpdateHomeHeroSectionDto,
-
+    @Body() updateResearchAndPublicationDto: UpdateResearchAndPublicationDto,
     @UploadedFile() file?: Express.Multer.File,
   ) {
-    return this.homeHeroSectionService.update(
+    return this.researchAndPublicationsService.update(
       id,
-      updateHomeHeroSectionDto,
+      updateResearchAndPublicationDto,
       file,
     );
   }
@@ -142,6 +143,6 @@ export class HomeHeroSectionController {
     summary: 'Delete single Member data.',
   })
   remove(@Param('id') id: string) {
-    return this.homeHeroSectionService.remove(id);
+    return this.researchAndPublicationsService.remove(id);
   }
 }

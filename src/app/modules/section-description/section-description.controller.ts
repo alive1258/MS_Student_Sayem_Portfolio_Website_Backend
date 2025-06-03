@@ -6,23 +6,25 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
   Req,
   Query,
-  UseGuards,
 } from '@nestjs/common';
-import { SkillsCategoryService } from './skills-category.service';
-import { CreateSkillsCategoryDto } from './dto/create-skills-category.dto';
-import { UpdateSkillsCategoryDto } from './dto/update-skills-category.dto';
-import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
-import { Request } from 'express';
-import { GetSkillsCategoryDto } from './dto/get-skills-category.dto';
+import { SectionDescriptionService } from './section-description.service';
+import { CreateSectionDescriptionDto } from './dto/create-section-description.dto';
+import { UpdateSectionDescriptionDto } from './dto/update-section-description.dto';
 import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
 import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
 import { Throttle } from '@nestjs/throttler';
+import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { Request } from 'express';
+import { GetSectionDescriptionDto } from './dto/get-section-description.dto';
 
-@Controller('skills-category')
-export class SkillsCategoryController {
-  constructor(private readonly skillsCategoryService: SkillsCategoryService) {}
+@Controller('section-description')
+export class SectionDescriptionController {
+  constructor(
+    private readonly sectionDescriptionService: SectionDescriptionService,
+  ) {}
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
   @Throttle({ default: { limit: 20, ttl: 180 } })
@@ -31,9 +33,12 @@ export class SkillsCategoryController {
   @ApiResponse({ status: 201, description: 'Category created successfully' })
   create(
     @Req() req: Request,
-    @Body() createSkillsCategoryDto: CreateSkillsCategoryDto,
+    @Body() createSectionDescriptionDto: CreateSectionDescriptionDto,
   ) {
-    return this.skillsCategoryService.create(req, createSkillsCategoryDto);
+    return this.sectionDescriptionService.create(
+      req,
+      createSectionDescriptionDto,
+    );
   }
 
   @Get()
@@ -60,8 +65,8 @@ export class SkillsCategoryController {
     description: 'Search keyword',
     example: 'First',
   })
-  findAll(@Query() getSkillsCategoryDto: GetSkillsCategoryDto) {
-    return this.skillsCategoryService.findAll(getSkillsCategoryDto);
+  findAll(@Query() getSectionDescriptionDto: GetSectionDescriptionDto) {
+    return this.sectionDescriptionService.findAll(getSectionDescriptionDto);
   }
 
   @Get(':id')
@@ -76,11 +81,11 @@ export class SkillsCategoryController {
   @ApiResponse({ status: 200, description: 'Category retrieved successfully' })
   @ApiResponse({ status: 404, description: 'Category not found' })
   findOne(@Param('id') id: string) {
-    return this.skillsCategoryService.findOne(id);
+    return this.sectionDescriptionService.findOne(id);
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 20, ttl: 180 } })
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Patch(':id')
   @ApiOperation({ summary: 'Update a snapshots category by ID' })
   @ApiParam({
@@ -94,13 +99,16 @@ export class SkillsCategoryController {
   @ApiResponse({ status: 400, description: 'Invalid update data or ID' })
   update(
     @Param('id') id: string,
-    @Body() updateSkillsCategoryDto: UpdateSkillsCategoryDto,
+    @Body() updateSectionDescriptionDto: UpdateSectionDescriptionDto,
   ) {
-    return this.skillsCategoryService.update(id, updateSkillsCategoryDto);
+    return this.sectionDescriptionService.update(
+      id,
+      updateSectionDescriptionDto,
+    );
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 20, ttl: 180 } })
+  @Throttle({ default: { limit: 6, ttl: 180 } })
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a snapshots category by ID' })
   @ApiParam({
@@ -113,6 +121,6 @@ export class SkillsCategoryController {
   @ApiResponse({ status: 200, description: 'Category deleted successfully' })
   @ApiResponse({ status: 404, description: 'Category not found' })
   remove(@Param('id') id: string) {
-    return this.skillsCategoryService.remove(id);
+    return this.sectionDescriptionService.remove(id);
   }
 }

@@ -7,9 +7,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'skills-category' })
-@ApiTags('SkillsCategory')
-export class SkillsCategory {
+@Entity({ name: 'section_description' })
+@ApiTags('SectionDescription')
+export class SectionDescription {
   /**
    * Primary key ID (auto-incremented bigint)
    */
@@ -21,6 +21,12 @@ export class SkillsCategory {
    */
   @Column({ type: 'varchar' })
   title: string;
+
+  /**
+   * Short description or tagline shown in the hero section.
+   */
+  @Column({ type: 'varchar' })
+  description: string;
 
   /**
    * ID of the user who added this record.

@@ -156,13 +156,9 @@ export class AuthService {
    * Get me
    */
   public async getMe(req: Request): Promise<{ user: User }> {
-    // get user id , company id and branch id from request
-    // const { sub: user_id } = req?.user;
+    // get user id
+
     const user_id = req?.user?.sub;
-    // if (req?.user && 'sub' in req?.user) {
-    //   const user_id = req.user.sub;
-    //   // ...
-    // }
 
     if (!user_id) {
       throw new BadRequestException('You have to Sign in.');

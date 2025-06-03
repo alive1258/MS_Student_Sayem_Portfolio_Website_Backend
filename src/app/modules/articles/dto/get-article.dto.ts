@@ -42,14 +42,6 @@ class GetArticleBaseDto {
   @IsOptional()
   @IsString({ message: 'Reading time must be a string.' })
   publish_time?: string;
-
-  @ApiPropertyOptional({
-    description: 'Filter by article category ID.',
-    example: '64cbb7f1c84f49ecb6d7f8de',
-  })
-  @IsOptional()
-  @IsString({ message: 'Article category ID must be a string.' })
-  article_category_id?: string;
 }
 
 export class GetArticleDto extends IntersectionType(

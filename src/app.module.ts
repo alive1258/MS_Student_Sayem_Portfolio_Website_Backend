@@ -36,6 +36,8 @@ import { ArticleDetailsModule } from './app/modules/article-details/article-deta
 import { ProjectsModule } from './app/modules/projects/projects.module';
 import { ProjectCategoriesModule } from './app/modules/project-categories/project-categories.module';
 import { ProjectDetailsModule } from './app/modules/project-details/project-details.module';
+import { ResearchAndPublicationsModule } from './app/modules/research-and-publications/research-and-publications.module';
+import { SectionDescriptionModule } from './app/modules/section-description/section-description.module';
 
 /**
  * // Get environment (development/production/etc.)
@@ -104,6 +106,8 @@ const ENV = process.env.NODE_ENV;
     ProjectsModule,
     ProjectCategoriesModule,
     ProjectDetailsModule,
+    ResearchAndPublicationsModule,
+    SectionDescriptionModule,
   ],
   controllers: [AppController],
   providers: [
