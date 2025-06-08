@@ -14,6 +14,7 @@ interface DataQueryParams<T extends ObjectLiteral> {
   relations?: string[];
   sumFields?: string[];
   selectRelations?: string[];
+  select?: string[];
 }
 
 @Injectable()
@@ -30,6 +31,7 @@ export class DataQueryService {
     paginationQuery,
     searchableFields,
     repository,
+    select = [],
     relations = [],
     sumFields = [],
     selectRelations = [],
@@ -43,24 +45,46 @@ export class DataQueryService {
 
     // Dynamically join relations based on the passed relations array
     relations.forEach((relation) => {
-      queryBuilder.leftJoinAndSelect(`entity.${relation}`, relation);
+      if (!relation.includes('.')) {
+        queryBuilder.leftJoinAndSelect(`entity.${relation}`, relation);
+      }
     });
+
+    // Dynamically join nested relations
+    relations.forEach((relation) => {
+      if (relation.includes('.')) {
+        const relationAlias = relation.replace(/\./g, '_');
+        const [alias, column] = relation.split('.');
+        queryBuilder.leftJoinAndSelect(`${alias}.${column}`, relationAlias);
+      }
+    });
+
     // Apply select only to relational fields while keeping all entity fields
     if (selectRelations.length > 0) {
       queryBuilder.select(['entity', ...selectRelations]);
     }
+    if (select && select.length > 0) {
+      queryBuilder.select(
+        select.map((field) => `entity.${field}`).concat(selectRelations),
+      );
+    }
 
-    // Add dynamic filters (AND conditions)
+    // Apply filters to the query builder
+
     if (filters && Object.keys(filters).length > 0) {
       for (const [field, value] of Object.entries(filters)) {
-        if (typeof value === 'boolean') {
-          queryBuilder.andWhere(`entity.${field} = :${field}`, {
-            [field]: value,
-          });
-        } else {
-          queryBuilder.andWhere(`entity.${field} = :${field}`, {
-            [field]: value,
-          });
+        if (value !== undefined && value !== null && value !== '') {
+          if (field.includes('.')) {
+            const [alias, column] = field.split('.');
+            const paramKey = `${alias}_${column}`;
+            queryBuilder.andWhere(`${alias}.${column} = :${paramKey}`, {
+              [paramKey]: value,
+            });
+          } else {
+            queryBuilder.andWhere(`entity.${field} = :${field}`, {
+              [field]: value,
+            });
+          }
         }
       }
     }
@@ -81,10 +105,28 @@ export class DataQueryService {
     // Apply pagination
     queryBuilder.skip((page - 1) * limit).take(limit);
 
-    // Dynamically calculate sum fields
-    const sumQueryBuilder = repository.createQueryBuilder('entity');
+    if (repository.metadata.propertiesMap.created_at) {
+      queryBuilder.orderBy({ 'entity.created_at': 'DESC' });
+    }
 
     // Dynamically calculate sum fields
+    const sumQueryBuilder = repository.createQueryBuilder('entity');
+    // Dynamically join relations based on the passed relations array
+    relations.forEach((relation) => {
+      if (!relation.includes('.')) {
+        sumQueryBuilder.leftJoinAndSelect(`entity.${relation}`, relation);
+      }
+    });
+
+    // Dynamically join nested relations
+    relations.forEach((relation) => {
+      if (relation.includes('.')) {
+        const relationAlias = relation.replace(/\./g, '_');
+        const [alias, column] = relation.split('.');
+        sumQueryBuilder.leftJoinAndSelect(`${alias}.${column}`, relationAlias);
+      }
+    });
+
     // Dynamically calculate sum fields
     if (sumFields.length > 0) {
       // Add SUM for each specified field
@@ -98,11 +140,22 @@ export class DataQueryService {
     }
 
     // Apply filters to the sum query builder
+
     if (filters && Object.keys(filters).length > 0) {
       for (const [field, value] of Object.entries(filters)) {
-        sumQueryBuilder.andWhere(`entity.${field} = :${field}`, {
-          [field]: value,
-        });
+        if (value !== undefined && value !== null && value !== '') {
+          if (field.includes('.')) {
+            const [alias, column] = field.split('.');
+            const paramKey = `${alias}_${column}`;
+            sumQueryBuilder.andWhere(`${alias}.${column} = :${paramKey}`, {
+              [paramKey]: value,
+            });
+          } else {
+            sumQueryBuilder.andWhere(`entity.${field} = :${field}`, {
+              [field]: value,
+            });
+          }
+        }
       }
     }
 

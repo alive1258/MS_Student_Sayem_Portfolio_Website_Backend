@@ -46,7 +46,7 @@ export class ExperienceController {
     return this.experienceService.create(req, createExperienceDto, file);
   }
 
-  @Get('/all-experience')
+  @Get()
   @ApiQuery({
     name: 'limit',
     type: 'string',

@@ -30,7 +30,7 @@ export class HomeAboutSectionController {
   ) {}
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @UseInterceptors(FileInterceptor('thumbnail_image'))
   @Post()
   @ApiOperation({
@@ -52,7 +52,7 @@ export class HomeAboutSectionController {
     );
   }
 
-  @Get('/all-home-about-section')
+  @Get('')
   @ApiQuery({
     name: 'limit',
     type: 'string',
@@ -97,7 +97,7 @@ export class HomeAboutSectionController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @UseInterceptors(FileInterceptor('thumbnail_image'))
   @Patch(':id')
   @ApiParam({
@@ -128,7 +128,7 @@ export class HomeAboutSectionController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Delete(':id')
   @ApiParam({
     name: 'id',

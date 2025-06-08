@@ -34,7 +34,9 @@ export class ProjectsService {
 
     // 🔐 Guard clause: Check if user is authenticated
     if (!user_id) {
-      throw new UnauthorizedException('User not found');
+      throw new UnauthorizedException(
+        'User not found ! You must be signed in to access this resource.',
+      );
     }
 
     // 🔎 Check if a existBlogTitle with the same name already exists

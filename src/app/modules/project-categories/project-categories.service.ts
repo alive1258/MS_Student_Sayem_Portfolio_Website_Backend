@@ -3,24 +3,24 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { CreateProjectCategoryDto } from './dto/create-project-category.dto';
+
 import { UpdateProjectCategoryDto } from './dto/update-project-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProjectCategory } from './entities/project-category.entity';
+
 import { Repository } from 'typeorm';
 import { DataQueryService } from 'src/app/common/data-query/data-query.service';
 import { Request } from 'express';
 import { GetProjectCategoryDto } from './dto/get-project-category.dto';
 import { IPagination } from 'src/app/common/data-query/pagination.interface';
+import { ProjectCategory } from './entities/project-category.entity';
+import { CreateProjectCategoryDto } from './dto/create-project-category.dto';
 
 @Injectable()
 export class ProjectCategoriesService {
   constructor(
-    /**
-     * Inject repository
-     */
     @InjectRepository(ProjectCategory)
-    private readonly projectCategoryRepository: Repository<ProjectCategory>,
+    private projectCategoryRepository: Repository<ProjectCategory>,
+
     private readonly dataQueryService: DataQueryService,
   ) {}
 
@@ -29,18 +29,21 @@ export class ProjectCategoriesService {
     createProjectCategoryDto: CreateProjectCategoryDto,
   ): Promise<ProjectCategory> {
     const user_id = req?.user?.sub;
+
     // 1. Check if user is authenticated
     if (!user_id) {
       throw new UnauthorizedException(
         'You must be signed in to access this resource.',
       );
     }
+
     // 2. Check for duplicate record
     const existingData = await this.projectCategoryRepository.findOne({
       where: {
         name: createProjectCategoryDto.name,
       },
     });
+
     if (existingData) {
       throw new BadRequestException(
         'A record with the same data already exists.',
@@ -48,11 +51,12 @@ export class ProjectCategoriesService {
     }
 
     // 3. Create and save the new entry
-    const newEntry = this.projectCategoryRepository.create({
+    const newProjectCategory = this.projectCategoryRepository.create({
       ...createProjectCategoryDto,
       added_by: user_id,
     });
-    return this.projectCategoryRepository.save(newEntry);
+
+    return await this.projectCategoryRepository.save(newProjectCategory);
   }
 
   public async findAll(

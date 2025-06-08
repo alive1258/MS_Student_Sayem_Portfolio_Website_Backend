@@ -30,7 +30,7 @@ export class HomeHeroSectionController {
   ) {}
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Post()
   @ApiOperation({
@@ -97,7 +97,7 @@ export class HomeHeroSectionController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Patch(':id')
   @ApiParam({
@@ -129,7 +129,7 @@ export class HomeHeroSectionController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Delete(':id')
   @ApiParam({
     name: 'id',

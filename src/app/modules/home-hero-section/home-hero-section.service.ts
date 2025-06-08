@@ -37,7 +37,9 @@ export class HomeHeroSectionService {
     const user_id = req?.user?.sub;
 
     if (!user_id) {
-      throw new UnauthorizedException('User ID is required.You have to sing in!');
+      throw new UnauthorizedException(
+        'User ID is required.You have to sing in!',
+      );
     }
 
     const existHomeHeroSection = await this.homeHeroSectionRepository.findOne({

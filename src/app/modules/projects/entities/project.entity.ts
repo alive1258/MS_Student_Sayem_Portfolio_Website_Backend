@@ -44,8 +44,8 @@ export class Project {
   /**
    * Short biography or description
    */
-  @Column({ type: 'varchar', nullable: false })
-  project_tags: string;
+  @Column({ type: 'varchar', nullable: true })
+  project_tags?: string;
 
   /**
    * Short biography or description

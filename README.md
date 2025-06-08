@@ -22,9 +22,63 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+## 📦Portfolio – Backend
+
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
+- `Clone the Repository:`
+
+```js
+git clone https://github.com/alive1258/pos-backend
+
+```
+
+- `Navigate to Project Directory:`
+
+```js
+cd [Project Directory]
+```
+
+- `Create a .env.development file in the root folder of the  project.`
+- `Add the following environment variable`
+
+```js
+ # AWS S3 Bucket
+S3_BUCKET=your-s3-bucket-name
+
+# PostgreSQL Database Configuration
+DB_HOST=your-database-host
+DB_PORT=your-database-port
+DB_USER=your-database-username
+DB_PASS=your-database-password
+DB_NAME=your-database-name
+DB_SYNC=true
+DB_AUTO_LOAD_ENTITIES=true
+
+# Profile Management
+PROFILE_API_KEY=your-profile-api-key
+
+# JWT Configuration
+JWT_SECRET=your-jwt-secret
+JWT_TOKEN_AUDIENCE=your-token-audience
+JWT_TOKEN_ISSUER=your-token-issuer
+JWT_ACCESS_TOKEN_TTL=3600
+JWT_REFRESH_TOKEN_TTL=864600
+
+# API Version
+API_VERSION=0.1.1
+
+# Email Configuration (SMTP)
+MAIL_HOST=your-mail-host
+MAIL_PORT=your-mail-port
+MAIL_SECURE=true
+SMTP_USERNAME=your-email-username
+SMTP_PASSWORD=your-email-password
+
+
+```
 
 ## Project setup
 
@@ -45,31 +99,109 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Run tests
+## Technologies Used
+
+This project uses a modern tech stack for building a scalable, secure, and performant full-stack application.
+
+## Tech Stack (Backend)
 
 ```bash
-# unit tests
-$ npm run test
+| Category          | Technologies & Libraries |
+| ----------------- | ------------------------ |
+| **Framework**     | NestJS                   |
+| **Database**      | PostgreSQL + TypeORM     |
+| **Validation**    | class-validator, Joi     |
+| **Security**      | JWT, bcrypt              |
+| **Rate Limiting** | @nestjs/throttler        |
+| **HTTP Client**   | Axios                    |
+| **Email Service** | Nodemailer               |
+| **Config Mgmt**   | @nestjs/config, dotenv   |
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
-## Deployment
+## 📡 API Requirements (Backend - NestJS)
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+These are the core RESTful API endpoints required for the POS & Inventory Management system:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Product Endpoints
+
+- `GET /products`
+  -🔹 Fetch all available products.
+  -📌 Used to display product listings.
+
+- `POST /products`
+  - 🔹 Create a new product entry.
+    -📝 Required fields: `name`, `code`, `price`, `stockQty`.
+
+-`GET /products/search?q=milk`
+-🔹 Search for products by name or code (partial match supported).
+-📌 Helps users quickly find items in the inventory.
+
+- `PUT /products/:id`
+  -🔹 Update product information (e.g., name, price, stock quantity).
+  -📌 Mainly used for stock adjustments or price updates.
+
+### 🚀⚙️ Backend (NestJS)
+
+- **[NestJS](https://nestjs.com/)** – NestJS – Progressive Node.js framework for building efficient and scalable server-side applications.
+  - `@nestjs/common`
+  - `@nestjs/core`
+  - `@nestjs/platform-express`
+
+### ⚙️ Configuration & Utilities
+
+- `@nestjs/config` – For environment-based configuration management.
+- `@nestjs/throttler` – Rate-limiting to prevent abuse.
+- `cookie-parser` – Parse HTTP request cookies.
+- `cross-env` – Set environment variables across platforms.
+
+### 🔐 Authentication & Authorization
+
+- `@nestjs/jwt` – JWT utilities for authentication.
+- `bcrypt` – For hashing and verifying passwords.
+
+### 🧠 Data Validation & Transformation
+
+- `class-validator` – For request validation using decorators.
+- `class-transformer` – For transforming and exposing class properties.
+- `joi` – Schema description and validation.
+
+### 🗃️ Database & ORM
+
+- **PostgreSQL** – Relational database.
+  - `pg` – PostgreSQL client for Node.js.
+- **TypeORM** – ORM for TypeScript and JavaScript.
+  - `@nestjs/typeorm`
+  - `typeorm`
+
+### 📦 API & HTTP Clients
+
+- `@nestjs/axios` – Axios integration for NestJS.
+- `axios` – Promise-based HTTP client.
+
+### 📧 Email Support
+
+- `nodemailer` – For sending emails.
+
+### 🧪 API Documentation
+
+- `@nestjs/swagger` – Swagger (OpenAPI) integration for automatic API documentation.
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+-After running the project, you can view the API documentation in your browser at:
+$ http://localhost:5000/api/v1/swagger
+
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 🧵 Observables & Streams
+
+- `rxjs` – Reactive Extensions for JavaScript.
+
+### 🧱 Decorator Support
+
+- `reflect-metadata` – Used by TypeScript decorators.
+
+---
 
 ## Resources
 

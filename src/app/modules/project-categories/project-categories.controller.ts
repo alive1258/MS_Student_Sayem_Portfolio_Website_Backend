@@ -13,12 +13,13 @@ import {
 import { ProjectCategoriesService } from './project-categories.service';
 import { CreateProjectCategoryDto } from './dto/create-project-category.dto';
 import { UpdateProjectCategoryDto } from './dto/update-project-category.dto';
-import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
-import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
+
 import { Throttle } from '@nestjs/throttler';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { GetProjectCategoryDto } from './dto/get-project-category.dto';
 import { Request } from 'express';
+import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
+import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
 
 @Controller('project-categories')
 export class ProjectCategoriesController {
@@ -38,8 +39,8 @@ export class ProjectCategoriesController {
   @ApiResponse({ status: 400, description: 'Validation failed.' })
   @ApiResponse({ status: 401, description: 'Unauthorized request.' })
   create(
-    @Body() @Req() req: Request,
-    createProjectCategoryDto: CreateProjectCategoryDto,
+    @Req() req: Request,
+    @Body() createProjectCategoryDto: CreateProjectCategoryDto,
   ) {
     return this.projectCategoriesService.create(req, createProjectCategoryDto);
   }

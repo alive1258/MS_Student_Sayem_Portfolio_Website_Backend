@@ -60,7 +60,6 @@ export class CreateHomeHeroSectionDto {
     example: 'https://example.com/cv.pdf',
   })
   @IsOptional()
-  @IsUrl()
   cv_link?: string;
 
   /**
