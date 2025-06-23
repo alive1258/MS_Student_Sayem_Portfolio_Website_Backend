@@ -50,7 +50,7 @@ export class SkillsService {
     // define relations
     const relations = ['skillsCategory'];
     const { page, limit, search, ...filters } = getSkillDto;
-    const selectRelations = ['skillsCategory.id'];
+    const selectRelations = ['skillsCategory.id', 'skillsCategory.title'];
 
     // define query
     const snapshot = this.dataQueryService.dataQuery({

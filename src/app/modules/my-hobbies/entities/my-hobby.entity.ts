@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { ApiProperty, ApiPropertyOptional, ApiTags } from '@nestjs/swagger';
 
 /**
@@ -35,7 +41,7 @@ export class MyHobby {
     description: 'Short description or tagline.',
     example: 'A passionate learner focused on full-stack development.',
   })
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   description: string;
 
   /**

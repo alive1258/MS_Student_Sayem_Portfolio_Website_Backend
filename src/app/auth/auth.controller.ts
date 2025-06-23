@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -81,7 +80,7 @@ export class AuthController {
       message: 'Successfully signed out.',
     };
   }
-  @Post('refresh-token')
+  @Post('/refresh-token')
   @HttpCode(HttpStatus.OK)
   @Auth(AuthType.None)
   public async refreshTokens(@Req() req: Request) {

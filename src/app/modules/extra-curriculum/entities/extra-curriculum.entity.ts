@@ -20,26 +20,26 @@ export class ExtraCurriculum {
   /**
    * Title or name of the extra curriculum activity.
    */
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   title: string;
 
   /**
    * Institute name where the activity was held.
    */
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   institute: string;
 
   /**
    * Organization responsible for the activity.
    */
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   organization: string;
 
   /**
    * Description or result of the activity.
    */
-  @Column({ type: 'text' })
-  data: string;
+  @Column({ type: 'varchar' })
+  description: string;
 
   /**
    * Optional photo or certificate related to the activity.

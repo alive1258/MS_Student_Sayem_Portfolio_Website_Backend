@@ -80,7 +80,7 @@ export class ArticlesController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @UseInterceptors(FileInterceptor('thumbnail'))
   @Patch(':id')
   @ApiOperation({ summary: 'Update a article by ID.' })
@@ -95,12 +95,16 @@ export class ArticlesController {
     description: 'Article updated successfully.',
   })
   @ApiResponse({ status: 400, description: 'Invalid data or ID.' })
-  update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
-    return this.articlesService.update(id, updateArticleDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateArticleDto: UpdateArticleDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    return this.articlesService.update(id, updateArticleDto, file);
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a article by ID.' })
   @ApiParam({

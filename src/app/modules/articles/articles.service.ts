@@ -154,7 +154,10 @@ export class ArticlesService {
     Object.assign(article, updateArticleDto);
 
     // 💾 Save the updated entity back to the database
-    return await this.articleRepository.save(article);
+    // return await this.articleRepository.save(article);
+    const updated = await this.articleRepository.save(article);
+
+    return updated;
   }
 
   public async remove(id: string): Promise<{ message: string }> {

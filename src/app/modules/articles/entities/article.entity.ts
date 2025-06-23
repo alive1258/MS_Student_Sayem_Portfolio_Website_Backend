@@ -44,8 +44,8 @@ export class Article {
   /**
    * Short biography or description
    */
-  @Column({ type: 'varchar', nullable: false })
-  article_tags: string;
+  @Column({ type: 'varchar', nullable: true })
+  article_tags?: string;
   /**
    * Short biography or description
    */

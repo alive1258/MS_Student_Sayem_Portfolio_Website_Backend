@@ -35,7 +35,7 @@ export class ExtraCurriculumCategoryController {
   ) {}
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Post()
   @ApiOperation({ summary: 'Create a new extra curriculum category' })
   @ApiResponse({ status: 201, description: 'Category created successfully' })
@@ -102,7 +102,7 @@ export class ExtraCurriculumCategoryController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Patch(':id')
   @ApiOperation({ summary: 'Update an existing category by ID' })
   @ApiParam({
@@ -124,7 +124,7 @@ export class ExtraCurriculumCategoryController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a category by ID' })
   @ApiParam({

@@ -29,7 +29,7 @@ export class AboutMeController {
 
   // ✅ Protected  endpoint
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Post()
   @ApiOperation({
@@ -47,7 +47,7 @@ export class AboutMeController {
     return this.aboutMeService.create(req, createAboutMeDto, file);
   }
 
-  @Get('/all-about-me')
+  @Get()
   @ApiQuery({
     name: 'limit',
     type: 'string',
@@ -92,7 +92,7 @@ export class AboutMeController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Patch(':id')
   @ApiParam({
@@ -119,7 +119,7 @@ export class AboutMeController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Delete(':id')
   @ApiParam({
     name: 'id',

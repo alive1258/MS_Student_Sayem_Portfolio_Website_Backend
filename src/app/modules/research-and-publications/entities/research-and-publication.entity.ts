@@ -47,8 +47,9 @@ export class ResearchAndPublication {
   /**
    * Tags associated with the publication (comma-separated)
    */
-  @Column({ type: 'varchar', nullable: false })
-  tags: string;
+
+  @Column('varchar', { array: true })
+  tags: string[];
 
   /**
    * Link to the paper (PDF or external site)

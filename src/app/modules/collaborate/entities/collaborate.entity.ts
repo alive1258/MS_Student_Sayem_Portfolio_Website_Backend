@@ -8,7 +8,6 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'collaborate' })
-@ApiTags('Collaborate')
 export class Collaborate {
   /**
    * Primary key ID (auto-incremented bigint)
@@ -19,13 +18,13 @@ export class Collaborate {
   /**
    * Short description or tagline shown in the hero section.
    */
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   title: string;
 
   /**
    * Link to the CV or portfolio (optional).
    */
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   description: string;
 
   /**

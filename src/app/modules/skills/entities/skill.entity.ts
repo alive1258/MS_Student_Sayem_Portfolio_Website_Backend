@@ -33,7 +33,7 @@ export class Skill {
     type: 'varchar',
     nullable: false,
   })
-  skill_amount?: string;
+  skill_amount?: number;
 
   /**
    * relation with snapshot category

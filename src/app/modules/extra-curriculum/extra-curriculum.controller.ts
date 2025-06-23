@@ -22,6 +22,7 @@ import { GetExtraCurriculumCategoryDto } from '../extra-curriculum-category/dto/
 import { AuthenticationGuard } from 'src/app/auth/guards/authentication.guard';
 import { IpDeviceThrottlerGuard } from 'src/app/auth/decorators/ip-device-throttler-guard';
 import { Throttle } from '@nestjs/throttler';
+import { GetExtraCurriculumDto } from './dto/get-extra-curriculum.dto';
 
 @Controller('extra-curriculum')
 export class ExtraCurriculumController {
@@ -30,7 +31,7 @@ export class ExtraCurriculumController {
   ) {}
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Post()
   @ApiOperation({
@@ -52,7 +53,7 @@ export class ExtraCurriculumController {
     );
   }
 
-  @Get('/all-extra-curriculums')
+  @Get()
   @ApiQuery({
     name: 'limit',
     type: 'string',
@@ -77,10 +78,8 @@ export class ExtraCurriculumController {
   @ApiOperation({
     summary: 'Get all the data.',
   })
-  findAll(
-    @Query() getExtraCurriculumCategoryDto: GetExtraCurriculumCategoryDto,
-  ) {
-    return this.extraCurriculumService.findAll(getExtraCurriculumCategoryDto);
+  findAll(@Query() getExtraCurriculumDto: GetExtraCurriculumDto) {
+    return this.extraCurriculumService.findAll(getExtraCurriculumDto);
   }
 
   @Get(':id')
@@ -99,7 +98,7 @@ export class ExtraCurriculumController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Patch(':id')
   @ApiParam({
@@ -130,7 +129,7 @@ export class ExtraCurriculumController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Delete(':id')
   @ApiParam({
     name: 'id',

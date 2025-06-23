@@ -41,6 +41,15 @@ export class ArticleDetail {
   @Column({ type: 'varchar', nullable: false })
   description: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  meta_description?: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  meta_title?: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  meta_key?: string;
+
   /**
    * Foreign key referencing the designation of the team member
    */

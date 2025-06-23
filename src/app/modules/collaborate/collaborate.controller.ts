@@ -35,7 +35,7 @@ export class CollaborateController {
    * Create collaborate  controller
    */
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Post()
   @ApiOperation({
     summary: 'Create a data.',
@@ -54,7 +54,7 @@ export class CollaborateController {
   /**
    * Get all Collaborate controller
    */
-  @Get('/all-collaborate')
+  @Get()
   @ApiResponse({
     status: 200,
     description: 'Get all the data.',
@@ -103,7 +103,7 @@ export class CollaborateController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Patch(':id')
   @ApiParam({
     name: 'id',
@@ -123,7 +123,7 @@ export class CollaborateController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Delete(':id')
   @ApiParam({
     name: 'id',

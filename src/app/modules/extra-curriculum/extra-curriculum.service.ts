@@ -14,6 +14,7 @@ import { ExtraCurriculum } from './entities/extra-curriculum.entity';
 import { Request } from 'express';
 import { IPagination } from 'src/app/common/data-query/pagination.interface';
 import { GetExtraCurriculumCategoryDto } from '../extra-curriculum-category/dto/get-extra-curriculum-category.dto';
+import { GetExtraCurriculumDto } from './dto/get-extra-curriculum.dto';
 
 @Injectable()
 export class ExtraCurriculumService {
@@ -55,7 +56,7 @@ export class ExtraCurriculumService {
   }
 
   public async findAll(
-    getExtraCurriculumCategoryDto: GetExtraCurriculumCategoryDto,
+    getExtraCurriculumDto: GetExtraCurriculumDto,
   ): Promise<IPagination<ExtraCurriculum>> {
     const searchableFields = ['title'];
 
@@ -63,9 +64,12 @@ export class ExtraCurriculumService {
     const relations = ['extraCurriculumCategory'];
 
     // Destructure pagination and filters
-    const { page, limit, search, ...filters } = getExtraCurriculumCategoryDto;
+    const { page, limit, search, ...filters } = getExtraCurriculumDto;
     // Define selective relation fields to optimize performance
-    const selectRelations = ['extraCurriculum.id'];
+    const selectRelations = [
+      'extraCurriculumCategory.id',
+      'extraCurriculumCategory.title',
+    ];
 
     // Perform the paginated query
     const result = await this.dataQueryService.dataQuery({
@@ -75,6 +79,7 @@ export class ExtraCurriculumService {
       relations,
       selectRelations,
     });
+
     return result;
   }
 

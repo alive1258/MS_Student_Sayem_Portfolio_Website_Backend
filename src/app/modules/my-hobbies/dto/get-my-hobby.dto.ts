@@ -1,4 +1,8 @@
-import { ApiProperty, ApiPropertyOptional, IntersectionType } from '@nestjs/swagger';
+import {
+  ApiProperty,
+  ApiPropertyOptional,
+  IntersectionType,
+} from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { PaginationQueryDto } from 'src/app/common/data-query/dto/data-query.dto';
 
@@ -21,14 +25,6 @@ class GetMyHobbyBaseDto {
   @IsOptional()
   @IsString()
   description?: string;
-
-  @ApiPropertyOptional({
-    description: 'Filter by image filename or URL for the hero section.',
-    example: 'sayem-profile.jpg',
-  })
-  @IsOptional()
-  @IsString()
-  photo?: string;
 }
 
 /**

@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateMyHobbyDto } from './dto/create-my-hobby.dto';
 import { UpdateMyHobbyDto } from './dto/update-my-hobby.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,101 +17,101 @@ import { IPagination } from 'src/app/common/data-query/pagination.interface';
 
 @Injectable()
 export class MyHobbiesService {
-constructor(
+  constructor(
+    @InjectRepository(MyHobby)
+    private readonly myHobbyRepository: Repository<MyHobby>,
 
-  @InjectRepository(MyHobby)
-  private readonly myHobbyRepository: Repository<MyHobby>,
+    private readonly dataQueryService: DataQueryService,
+    private readonly fileUploadsService: FileUploadsService,
+  ) {}
 
-  private readonly dataQueryService: DataQueryService,
-  private readonly fileUploadsService: FileUploadsService,
-) {}
+  public async create(
+    req: Request,
+    createMyHobbyDto: CreateMyHobbyDto,
+    file?: Express.Multer.File,
+  ): Promise<MyHobby> {
+    const user_id = req?.user?.sub;
+    if (!user_id) {
+      throw new UnauthorizedException(
+        'User ID is required.You have to sing in!',
+      );
+    }
+    const existMyHobby = await this.myHobbyRepository.findOne({
+      where: { title: createMyHobbyDto.title },
+    });
+    if (existMyHobby) {
+      throw new BadRequestException('This hobby already exists');
+    }
 
-public async  create(
-  req:Request,
-  createMyHobbyDto: CreateMyHobbyDto,
-  file?: Express.Multer.File):Promise<MyHobby> {
-  const user_id=req?.user?.sub
-  if(!user_id){
-    throw new UnauthorizedException('User ID is required.You have to sing in!');
-  }
-const existMyHobby=await this.myHobbyRepository.findOne({where:{title:createMyHobbyDto.title}})
-if(existMyHobby){
-  throw new BadRequestException('This hobby already exists');
-}
+    let photo: string | undefined;
+    if (file) {
+      const uploaded = await this.fileUploadsService.fileUploads(file);
+      photo = Array.isArray(uploaded) ? uploaded[0] : uploaded;
+    }
 
-let photo:string|undefined;
-if(file){
-  const uploaded=await this.fileUploadsService.fileUploads(file)
-  photo=Array.isArray(uploaded)?uploaded[0]:uploaded;
-}
-
-//create new myHobby
-const newMyHobby=this.myHobbyRepository.create({
-  ...createMyHobbyDto,
-  added_by:user_id,
-  photo}
-  );
-  const myHobby=await this.myHobbyRepository.save(newMyHobby);
-  return myHobby;
-
-
-
-}
-
- public async findAll(getMyHobbyDto:GetMyHobbyDto):Promise<IPagination<MyHobby>> {
-   const searchableFields = ['title', 'description'];
-   const { limit, page, search ,...filters } = getMyHobbyDto;
-   const myHobbies=this.dataQueryService.dataQuery({
-    paginationQuery:{limit, page,search,filters},
-    searchableFields,
-    repository: this.myHobbyRepository,
-   })
-   return myHobbies;
+    //create new myHobby
+    const newMyHobby = this.myHobbyRepository.create({
+      ...createMyHobbyDto,
+      added_by: user_id,
+      photo,
+    });
+    const myHobby = await this.myHobbyRepository.save(newMyHobby);
+    return myHobby;
   }
 
-public async  findOne(id: string):Promise<MyHobby> {
-  const myHobby=await this.myHobbyRepository.findOne({
+  public async findAll(
+    getMyHobbyDto: GetMyHobbyDto,
+  ): Promise<IPagination<MyHobby>> {
+    const searchableFields = ['title', 'description'];
+    const { limit, page, search, ...filters } = getMyHobbyDto;
+    const myHobbies = this.dataQueryService.dataQuery({
+      paginationQuery: { limit, page, search, filters },
+      searchableFields,
+      repository: this.myHobbyRepository,
+    });
+    return myHobbies;
+  }
+
+  public async findOne(id: string): Promise<MyHobby> {
+    const myHobby = await this.myHobbyRepository.findOne({
       where: {
         id,
       },
     });
-    if(!myHobby){
+    if (!myHobby) {
       throw new BadRequestException('This hobby does not exist');
     }
     return myHobby;
- 
   }
 
-public async  update(id: string, updateMyHobbyDto: UpdateMyHobbyDto,
-file?: Express.Multer.File
-):Promise<MyHobby> {
-    
-if(!id){
-  throw new BadRequestException('MyHobby ID is required');
-}
+  public async update(
+    id: string,
+    updateMyHobbyDto: UpdateMyHobbyDto,
+    file?: Express.Multer.File,
+  ): Promise<MyHobby> {
+    if (!id) {
+      throw new BadRequestException('MyHobby ID is required');
+    }
 
-const existingMyHobby = await this.myHobbyRepository.findOneBy({
+    const existingMyHobby = await this.myHobbyRepository.findOneBy({
       id,
     });
 
-if(!existingMyHobby){
-  throw new BadRequestException('This hobby not found');
-}
+    if (!existingMyHobby) {
+      throw new BadRequestException('This hobby not found');
+    }
 
+    let photo: string | string[] | undefined;
+    if (file && existingMyHobby.photo) {
+      photo = await this.fileUploadsService.updateFileUploads({
+        oldFile: existingMyHobby.photo,
+        currentFile: file,
+      });
+    }
 
-let photo:string | string[] | undefined;
-if(file && existingMyHobby.photo){
-  photo=await this.fileUploadsService.updateFileUploads({
-    oldFile:existingMyHobby.photo,
-    currentFile:file,
-  })
-}
-
-updateMyHobbyDto.photo=photo as string | undefined
- Object.assign(existingMyHobby,updateMyHobbyDto)
- return await this.myHobbyRepository.save(existingMyHobby);
-
-
+    updateMyHobbyDto.photo = photo as string | undefined;
+    Object.assign(existingMyHobby, updateMyHobbyDto);
+    return await this.myHobbyRepository.save(existingMyHobby);
   }
 
   public async remove(id: string): Promise<{ message: string }> {

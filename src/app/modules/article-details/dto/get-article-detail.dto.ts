@@ -20,6 +20,31 @@ class GetArticleDetailBaseDto {
   points?: string;
 
   @ApiPropertyOptional({
+    description: 'meta_key related to the article post, comma-separated.',
+    example: 'NestJS,API,Backend',
+  })
+  @IsString({ message: 'Article meta_key must be a string.' })
+  @IsOptional()
+  meta_key?: string;
+
+  @ApiPropertyOptional({
+    description: 'meta_title related to the article post, comma-separated.',
+    example: 'NestJS,API,Backend',
+  })
+  @IsString({ message: 'Article meta_title must be a string.' })
+  @IsOptional()
+  meta_title?: string;
+
+  @ApiPropertyOptional({
+    description:
+      'meta_description related to the article post, comma-separated.',
+    example: 'NestJS,API,Backend',
+  })
+  @IsString({ message: 'Article meta_description must be a string.' })
+  @IsOptional()
+  meta_description?: string;
+
+  @ApiPropertyOptional({
     description: 'Filter by the description of the Article detail.',
     example: 'john-doe',
   })

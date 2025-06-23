@@ -1,5 +1,5 @@
 import { ApiPropertyOptional, IntersectionType } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { PaginationQueryDto } from 'src/app/common/data-query/dto/data-query.dto';
 
 class GetSkillBaseDto {
@@ -21,9 +21,9 @@ class GetSkillBaseDto {
     description: 'Amount or level of the skill',
     example: 'Advanced',
   })
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  skill_amount?: string;
+  skill_amount?: number;
 
   /**
    * Foreign key ID of the related skill category

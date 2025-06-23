@@ -38,7 +38,7 @@ export class SkillsController {
     return this.skillsService.create(req, createSkillDto);
   }
 
-  @Get('/all-skills')
+  @Get()
   @ApiQuery({
     name: 'limit',
     type: 'string',

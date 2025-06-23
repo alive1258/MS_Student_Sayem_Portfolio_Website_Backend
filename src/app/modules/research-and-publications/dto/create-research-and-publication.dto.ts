@@ -1,5 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  ArrayNotEmpty,
+  IsArray,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateResearchAndPublicationDto {
   @ApiProperty({
@@ -38,9 +44,10 @@ export class CreateResearchAndPublicationDto {
     description: 'Tags related to the research, comma-separated.',
     example: 'NestJS,API,Backend',
   })
-  @IsString({ message: 'Tags must be a string.' })
-  @IsNotEmpty({ message: 'Tags are required.' })
-  tags: string;
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  tags: string[];
 
   @ApiPropertyOptional({
     description: 'Filename or URL of the thumbnail image for the publication.',

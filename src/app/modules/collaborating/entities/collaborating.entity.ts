@@ -53,7 +53,7 @@ export class Collaborating {
     required: false,
   })
   @Column({ type: 'varchar', length: 500, nullable: false })
-  linked_link: string;
+  linkedin_link: string;
 
   /**
    * Physical location of the collaborating entity (optional).

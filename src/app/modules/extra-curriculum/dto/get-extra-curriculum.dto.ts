@@ -37,7 +37,7 @@ class GetExtraCurriculumBaseDto {
   })
   @IsString()
   @IsOptional()
-  data?: string;
+  description?: string;
 
   @ApiPropertyOptional({
     description:

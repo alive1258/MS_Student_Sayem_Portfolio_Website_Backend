@@ -36,7 +36,7 @@ class GetCollaboratingBaseDto {
   })
   @IsUrl()
   @IsOptional()
-  linked_link?: string;
+  linkedin_link?: string;
 
   @ApiPropertyOptional({
     description: 'Location of the collaborating institute or department.',

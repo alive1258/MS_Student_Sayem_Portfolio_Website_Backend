@@ -33,7 +33,7 @@ export class CreateExtraCurriculumDto {
   })
   @IsString()
   @IsNotEmpty()
-  data: string;
+  description: string;
 
   @ApiPropertyOptional({
     description:

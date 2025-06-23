@@ -14,19 +14,19 @@ export class AboutMe {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   id: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   title: string;
 
   /**
    * Short description or tagline shown in the hero section.
    */
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   description: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   sub_title: string;
 
-  @Column({ type: 'text' })
+  @Column('varchar', { array: true })
   skills: string[];
 
   /**
@@ -38,7 +38,7 @@ export class AboutMe {
   /**
    * Photo filename or image URL (optional).
    */
-  @Column({ type: 'bigint', nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   photo?: string;
 
   /**

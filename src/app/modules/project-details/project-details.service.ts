@@ -79,7 +79,7 @@ export class ProjectDetailsService {
 
     // Define related entities to join (eager loading)
     const relations = ['project'];
-    const selectRelations = ['project.title', 'project.photo'];
+    const selectRelations = ['project.project_title', 'project.thumbnail'];
 
     // Destructure pagination, search term, and other filter fields from DTO
     const { limit, page, search, ...filters } = getProjectDetailDto;
@@ -140,23 +140,6 @@ export class ProjectDetailsService {
       throw new NotFoundException('projectDetail details not found');
     }
 
-    // let photo;
-
-    // // 📤 If new file provided and photo exists, update the file storageHandle file upload if a new file is provided
-    // if (files && projectDetail?.photo?.length) {
-    //   projectDetail?.photo?.map(async (ph, index) => {
-    //     const img = await this.fileUploadsService.updateFileUploads({
-    //       oldFile: ph,
-    //       currentFile: files[index],
-    //     });
-    //     photo?.push(img);
-    //   });
-    // }
-
-    // 📤 If new file provided and photo does not exist, upload the new file
-    // if (files && !projectDetail?.photo?.length) {
-    //   photo = await this.fileUploadsService.fileUploads(files);
-    // }
     let photo: string[] | undefined;
 
     // ✅ If files are provided and previous photos exist, update them one by one

@@ -63,7 +63,7 @@ export class SnapshotsService {
     // define relations
     const relations = ['snapshotsCategory'];
     const { page, limit, search, ...filters } = getSnapshotDto;
-    const selectRelations = ['snapshotsCategory.photo', 'snapshotsCategory.id'];
+    const selectRelations = ['snapshotsCategory.title', 'snapshotsCategory.id'];
 
     // define query
     const snapshot = this.dataQueryService.dataQuery({

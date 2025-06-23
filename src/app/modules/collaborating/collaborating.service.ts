@@ -5,13 +5,13 @@ import {
 } from '@nestjs/common';
 import { CreateCollaboratingDto } from './dto/create-collaborating.dto';
 import { UpdateCollaboratingDto } from './dto/update-collaborating.dto';
-import { Collaborate } from '../collaborate/entities/collaborate.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DataQueryService } from 'src/app/common/data-query/data-query.service';
 import { Request } from 'express';
 import { GetCollaborateDto } from '../collaborate/dto/get-collaborate.dto';
 import { IPagination } from 'src/app/common/data-query/pagination.interface';
+import { Collaborating } from './entities/collaborating.entity';
 
 @Injectable()
 export class CollaboratingService {
@@ -19,15 +19,15 @@ export class CollaboratingService {
     /**
      * Inject repository
      */
-    @InjectRepository(Collaborate)
-    private readonly collaborateRepository: Repository<Collaborate>,
+    @InjectRepository(Collaborating)
+    private readonly collaborateRepository: Repository<Collaborating>,
     private readonly dataQueryService: DataQueryService,
   ) {}
 
   public async create(
     req: Request,
     createCollaboratingDto: CreateCollaboratingDto,
-  ): Promise<Collaborate> {
+  ): Promise<Collaborating> {
     const user_id = req?.user?.sub;
     // 1. Check if user is authenticated
     if (!user_id) {
@@ -61,7 +61,7 @@ export class CollaboratingService {
 
   public async findAll(
     getCollaborateDto: GetCollaborateDto,
-  ): Promise<IPagination<Collaborate>> {
+  ): Promise<IPagination<Collaborating>> {
     // Fields that can be searched by keyword
     const searchableFields = ['title'];
 
@@ -81,7 +81,7 @@ export class CollaboratingService {
     return collaborate;
   }
 
-  public async findOne(id: string): Promise<Collaborate> {
+  public async findOne(id: string): Promise<Collaborating> {
     const collaborate = await this.collaborateRepository.findOne({
       where: {
         id,
@@ -96,7 +96,7 @@ export class CollaboratingService {
   public async update(
     id: string,
     updateCollaboratingDto: UpdateCollaboratingDto,
-  ): Promise<Collaborate> {
+  ): Promise<Collaborating> {
     // 1. Validate that the ID parameter is provided
     if (!id) {
       throw new BadRequestException('collaborate Id is required');

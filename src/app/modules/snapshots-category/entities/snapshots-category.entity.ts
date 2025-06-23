@@ -19,7 +19,7 @@ export class SnapshotsCategory {
   /**
    * Short description or tagline shown in the hero section.
    */
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   title: string;
 
   /**

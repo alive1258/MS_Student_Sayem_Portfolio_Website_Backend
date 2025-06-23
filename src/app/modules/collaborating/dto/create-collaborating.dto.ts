@@ -32,7 +32,7 @@ export class CreateCollaboratingDto {
   })
   @IsUrl()
   @IsNotEmpty()
-  linked_link: string;
+  linkedin_link: string;
 
   @ApiProperty({
     description: 'Location of the collaborating institute or department.',

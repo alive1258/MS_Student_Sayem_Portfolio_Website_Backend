@@ -41,7 +41,7 @@ export class SnapshotsCategoryController {
     );
   }
 
-  @Get('/all-snapshots-category')
+  @Get()
   @ApiOperation({ summary: 'Retrieve paginated list of snapshot categories' })
   @ApiResponse({ status: 200, description: 'List retrieved successfully' })
   @ApiQuery({

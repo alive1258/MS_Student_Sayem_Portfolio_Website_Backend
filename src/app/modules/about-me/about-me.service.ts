@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  Req,
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateAboutMeDto } from './dto/create-about-me.dto';
@@ -26,7 +25,7 @@ export class AboutMeService {
   ) {}
 
   public async create(
-    @Req() req: Request,
+    req: Request,
     createAboutMeDto: CreateAboutMeDto,
     file?: Express.Multer.File,
   ): Promise<AboutMe> {
@@ -58,13 +57,14 @@ export class AboutMeService {
       photo,
     });
 
+    console.log(newAboutMe);
     return await this.aboutMeRepository.save(newAboutMe);
   }
 
   public async findAll(
     getAboutMeDto: GetAboutMeDto,
   ): Promise<IPagination<AboutMe>> {
-    const searchableFields = ['title', 'description', 'sub_title', 'skills'];
+    const searchableFields = ['title', 'description', 'sub_title'];
 
     const { page, limit, search, ...filters } = getAboutMeDto;
 

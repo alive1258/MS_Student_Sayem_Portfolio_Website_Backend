@@ -11,6 +11,31 @@ export class CreateArticleDetailDto {
   title: string;
 
   @ApiProperty({
+    description: 'meta_key related to the article post, comma-separated.',
+    example: 'NestJS,API,Backend',
+  })
+  @IsString({ message: 'Article meta_key must be a string.' })
+  @IsOptional()
+  meta_key?: string;
+
+  @ApiProperty({
+    description: 'meta_title related to the article post, comma-separated.',
+    example: 'NestJS,API,Backend',
+  })
+  @IsString({ message: 'Article meta_title must be a string.' })
+  @IsOptional()
+  meta_title?: string;
+
+  @ApiProperty({
+    description:
+      'meta_description related to the article post, comma-separated.',
+    example: 'NestJS,API,Backend',
+  })
+  @IsString({ message: 'Article meta_description must be a string.' })
+  @IsOptional()
+  meta_description?: string;
+
+  @ApiProperty({
     description: 'Points of the article post.',
     example: [
       'Learn NestJS routing',

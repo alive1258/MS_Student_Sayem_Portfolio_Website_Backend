@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateSkillDto {
   /**
@@ -20,9 +20,9 @@ export class CreateSkillDto {
     description: 'Amount or level of the skill',
     example: 'Advanced',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  skill_amount: string;
+  skill_amount: number;
 
   /**
    * Foreign key ID of the related skill category
