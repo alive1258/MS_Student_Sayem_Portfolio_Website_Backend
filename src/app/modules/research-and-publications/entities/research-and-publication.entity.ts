@@ -54,8 +54,8 @@ export class ResearchAndPublication {
   /**
    * Link to the paper (PDF or external site)
    */
-  @Column({ type: 'varchar', nullable: false })
-  paper_link: string;
+  @Column({ type: 'varchar', nullable: true })
+  paper_link?: string;
 
   /**
    * User ID of the person who added the publication

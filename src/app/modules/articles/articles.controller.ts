@@ -65,7 +65,7 @@ export class ArticlesController {
     return this.articlesService.findAll(getArticleDto);
   }
 
-  @Get(':id')
+  @Get(':slug')
   @ApiOperation({ summary: 'Get a single article by ID.' })
   @ApiParam({
     name: 'id',
@@ -75,8 +75,8 @@ export class ArticlesController {
   })
   @ApiResponse({ status: 200, description: 'Article found.' })
   @ApiResponse({ status: 404, description: 'Article not found.' })
-  findOne(@Param('id') id: string) {
-    return this.articlesService.findOne(id);
+  findOne(@Param('slug') slug: string) {
+    return this.articlesService.findOne(slug);
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)

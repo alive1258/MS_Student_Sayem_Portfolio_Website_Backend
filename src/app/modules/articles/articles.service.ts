@@ -102,10 +102,10 @@ export class ArticlesService {
     return article;
   }
 
-  public async findOne(id: string): Promise<Article> {
+  public async findOne(slug: string): Promise<Article> {
     const article = await this.articleRepository.findOne({
       where: {
-        id,
+        slug,
       },
       relations: ['articleCategory'],
     });
@@ -187,7 +187,7 @@ export class ArticlesService {
       }
 
       // 🗑️ Delete the article record from the database
-      await this.articleRepository.delete(article);
+      await this.articleRepository.remove(article);
 
       // 🏁 Return success message
       return {

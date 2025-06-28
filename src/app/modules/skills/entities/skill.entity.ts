@@ -20,11 +20,8 @@ export class Skill {
   /**
    * skill_title
    */
-  @Column({
-    type: 'varchar',
-    nullable: false,
-  })
-  skill_title?: string;
+  @Column({ type: 'varchar', nullable: false })
+  skill_title: string;
 
   /**
    * skill_amount
@@ -33,7 +30,7 @@ export class Skill {
     type: 'varchar',
     nullable: false,
   })
-  skill_amount?: number;
+  skill_amount: number;
 
   /**
    * relation with snapshot category

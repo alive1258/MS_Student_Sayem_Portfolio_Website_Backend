@@ -104,10 +104,10 @@ export class ProjectsService {
     return project;
   }
 
-  public async findOne(id: string): Promise<Project> {
+  public async findOne(slug: string): Promise<Project> {
     const project = await this.projectRepository.findOne({
       where: {
-        id,
+        slug,
       },
       relations: ['projectCategory'],
     });
@@ -186,7 +186,7 @@ export class ProjectsService {
       }
 
       // 🗑️ Delete the project record from the database
-      await this.projectRepository.delete(project);
+      await this.projectRepository.remove(project);
 
       // 🏁 Return success message
       return {

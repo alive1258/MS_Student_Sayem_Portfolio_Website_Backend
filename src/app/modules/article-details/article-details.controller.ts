@@ -107,7 +107,7 @@ export class ArticleDetailsController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a blog by ID.' })
   @ApiParam({

@@ -216,7 +216,7 @@ export class ArticleDetailsService {
 
       // 🛑 Throw error if no matching record is found
       if (!articleDetail) {
-        throw new NotFoundException('Blog detail not found');
+        throw new NotFoundException('articleDetail detail not found');
       }
 
       // 🗑️ Delete associated files if they exist
@@ -237,7 +237,7 @@ export class ArticleDetailsService {
 
       // 🏁 Return success message
       return {
-        message: 'Blog deleted successfully',
+        message: 'articleDetail deleted successfully',
       };
     } catch (error) {
       throw new BadRequestException(error.message || 'Failed to delete record');

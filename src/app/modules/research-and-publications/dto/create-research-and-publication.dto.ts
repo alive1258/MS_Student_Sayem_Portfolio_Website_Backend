@@ -62,6 +62,6 @@ export class CreateResearchAndPublicationDto {
     example: 'https://journals.org/article/12345',
   })
   @IsString({ message: 'Paper link must be a string.' })
-  @IsNotEmpty({ message: 'Paper link is required.' })
-  paper_link: string;
+  @IsOptional()
+  paper_link?: string;
 }
