@@ -38,6 +38,7 @@ import { ProjectCategoriesModule } from './app/modules/project-categories/projec
 import { ProjectDetailsModule } from './app/modules/project-details/project-details.module';
 import { ResearchAndPublicationsModule } from './app/modules/research-and-publications/research-and-publications.module';
 import { SectionDescriptionModule } from './app/modules/section-description/section-description.module';
+import { SendMassageModule } from './app/modules/send-massage/send-massage.module';
 
 /**
  * // Get environment (development/production/etc.)
@@ -108,6 +109,7 @@ const ENV = process.env.NODE_ENV;
     ProjectDetailsModule,
     ResearchAndPublicationsModule,
     SectionDescriptionModule,
+    SendMassageModule,
   ],
   controllers: [AppController],
   providers: [

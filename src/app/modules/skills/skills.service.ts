@@ -49,7 +49,7 @@ export class SkillsService {
     const searchableFields = [''];
     // define relations
     const relations = ['skillsCategory'];
-    const { page, limit, search, ...filters } = getSkillDto;
+    const { page, limit = 100, search, ...filters } = getSkillDto;
     const selectRelations = ['skillsCategory.id', 'skillsCategory.title'];
 
     // define query
@@ -60,6 +60,7 @@ export class SkillsService {
       relations,
       selectRelations,
     });
+
     return snapshot;
   }
 
