@@ -28,7 +28,7 @@ export class ProfessorsController {
   constructor(private readonly professorsService: ProfessorsService) {}
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Post()
   @ApiOperation({
@@ -46,7 +46,7 @@ export class ProfessorsController {
     return this.professorsService.create(req, createProfessorDto, file);
   }
 
-  @Get('/all-professors')
+  @Get()
   @ApiQuery({
     name: 'limit',
     type: 'string',
@@ -91,7 +91,7 @@ export class ProfessorsController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @UseInterceptors(FileInterceptor('photo'))
   @Patch(':id')
   @ApiParam({
@@ -118,7 +118,7 @@ export class ProfessorsController {
   }
 
   @UseGuards(AuthenticationGuard, IpDeviceThrottlerGuard)
-  @Throttle({ default: { limit: 6, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Delete(':id')
   @ApiParam({
     name: 'id',

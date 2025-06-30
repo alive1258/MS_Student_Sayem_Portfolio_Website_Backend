@@ -43,29 +43,12 @@ class GetProfessorBaseDto {
   title?: string;
 
   @ApiPropertyOptional({
-    description: 'List of research subject titles.',
-    example: ['Artificial Intelligence', 'Machine Learning'],
-  })
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  research_subject_title?: string[];
-
-  @ApiPropertyOptional({
     description: "Brief description of the professor's expertise.",
     example: 'I specialize in AI-driven systems and full-stack development.',
   })
   @IsOptional()
   @IsString()
   description?: string;
-
-  @ApiPropertyOptional({
-    description: "Filename or URL of the professor's profile photo.",
-    example: 'sayem-profile.jpg',
-  })
-  @IsOptional()
-  @IsString()
-  photo?: string;
 }
 
 /**

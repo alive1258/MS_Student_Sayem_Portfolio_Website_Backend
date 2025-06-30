@@ -64,7 +64,7 @@ export class ProfessorsService {
   public async findAll(
     getProfessorDto: GetProfessorDto,
   ): Promise<IPagination<Professor>> {
-    const searchableFields = ['title'];
+    const searchableFields = ['professor_name'];
 
     const { page, limit, search, ...filters } = getProfessorDto;
 
