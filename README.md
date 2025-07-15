@@ -22,7 +22,9 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## 📦Portfolio – Backend
+## 📦 SAYEM Portfolio Website API System – Backend
+
+
 
 ## Description
 
@@ -77,6 +79,10 @@ MAIL_SECURE=true
 SMTP_USERNAME=your-email-username
 SMTP_PASSWORD=your-email-password
 
+# Image Upload URL
+IMAGE_UPLOAD_URL=https://your-upload-api-url.com
+
+
 
 ```
 
@@ -121,25 +127,34 @@ This project uses a modern tech stack for building a scalable, secure, and perfo
 
 ## 📡 API Requirements (Backend - NestJS)
 
-These are the core RESTful API endpoints required for the POS & Inventory Management system:
+These are the core RESTful API endpoints :
 
-Product Endpoints
+data Endpoints
 
-- `GET /products`
-  -🔹 Fetch all available products.
-  -📌 Used to display product listings.
+- `GET /data`
+  -🔹 Fetch all available data.
+  -📌 Used to display data listings.
 
-- `POST /products`
-  - 🔹 Create a new product entry.
-    -📝 Required fields: `name`, `code`, `price`, `stockQty`.
+- `POST /data`
+  - 🔹 Create a new data entry.
+    -📝 Required fields:
 
--`GET /products/search?q=milk`
--🔹 Search for products by name or code (partial match supported).
--📌 Helps users quickly find items in the inventory.
+-`GET /data/search?q=milk`
+-🔹 Search for data by name or code (partial match supported).
+-📌 Helps users quickly find items in the data.
 
-- `PUT /products/:id`
-  -🔹 Update product information (e.g., name, price, stock quantity).
+- `PUT /data/:id`
+  -🔹 Update data information (e.g., name, etc).
   -📌 Mainly used for stock adjustments or price updates.
+
+  ## 🧾 Sales / POS Endpoints
+
+  -`POST /
+  -🔹 Accepts data items from the frontend, processes 
+
+
+
+
 
 ### 🚀⚙️ Backend (NestJS)
 
